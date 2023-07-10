@@ -26,8 +26,11 @@ import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.session.MediaSession
 import androidx.media3.ui.PlayerView
 import com.example.media3.ui.theme.Media3Theme
+import com.example.media3.viewmodel.MainViewModel
+import org.koin.android.ext.android.inject
 
 class MainActivity : ComponentActivity() {
+    private val mainViewModel: MainViewModel by inject<MainViewModel>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
