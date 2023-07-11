@@ -4,7 +4,8 @@ import androidx.lifecycle.ViewModel
 import com.example.media3.data.VideoItem
 
 class MainViewModel : ViewModel() {
-    private val videoList = mutableListOf<VideoItem>()
+
+    val videoList = mutableListOf<VideoItem>()
 
     init {
         /**

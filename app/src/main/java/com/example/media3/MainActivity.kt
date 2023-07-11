@@ -5,8 +5,15 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.focusable
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardElevation
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -16,6 +23,8 @@ import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
+import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
@@ -25,6 +34,7 @@ import androidx.media3.common.MediaItem
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.session.MediaSession
 import androidx.media3.ui.PlayerView
+import com.example.media3.data.VideoItem
 import com.example.media3.ui.theme.Media3Theme
 import com.example.media3.viewmodel.MainViewModel
 import org.koin.android.ext.android.inject
@@ -37,11 +47,39 @@ class MainActivity : ComponentActivity() {
         setContent {
             Media3Theme {
                 Column {
-                    VideoView(videoUrl = "https://dash.akamaized.net/dash264/TestCases/2c/qualcomm/1/MultiResMPEG2.mpd")
+                    mainViewModel.videoList.first().let {
+                        VideoView(videoUrl = it.url)
+                    }
+                    VideoList(videoList = mainViewModel.videoList)
                 }
             }
         }
     }
+}
+
+@Composable
+fun VideoList(videoList: List<VideoItem>) {
+    LazyColumn(contentPadding = PaddingValues(horizontal = 8.dp)) {
+        items(videoList) {
+            VideoItemView(it)
+        }
+    }
+}
+
+@Composable
+fun VideoItemView(item: VideoItem) {
+    Card(modifier = Modifier.padding(8.dp)) {
+        Column(modifier = Modifier.padding(20.dp)) {
+            Text(
+                text = item.title,
+                style = MaterialTheme.typography.bodyMedium,
+                fontStyle = FontStyle.Italic,
+                fontWeight = FontWeight.Bold
+            )
+            Text(text = item.url, style = MaterialTheme.typography.bodyMedium)
+        }
+    }
+
 }
 
 @Composable
@@ -65,8 +103,7 @@ fun VideoView(videoUrl: String) {
             }
         })
     ) {
-        val observer = LifecycleEventObserver {
-                _, event ->
+        val observer = LifecycleEventObserver { _, event ->
             when (event) {
                 Lifecycle.Event.ON_PAUSE -> {
                     player.pause()
