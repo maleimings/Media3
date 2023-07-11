@@ -98,20 +98,23 @@ fun VideoItemView(item: VideoItem, onClick: (url: String) -> Unit) {
             Text(text = item.url, style = MaterialTheme.typography.bodyMedium)
         }
     }
-
 }
 
 @Composable
 fun VideoView(videoUrl: String) {
     val context = LocalContext.current
+    
+    val player = remember(context) {
+        ExoPlayer.Builder(context).build()
+    }
 
-    val player = ExoPlayer.Builder(context).build()
-        .also { exoPlayer ->
-            val mediaItem = MediaItem.fromUri(videoUrl)
-            exoPlayer.setMediaItem(mediaItem)
-            exoPlayer.prepare()
-            exoPlayer.play()
-        }
+    player.stop()
+
+
+    val mediaItem = MediaItem.fromUri(videoUrl)
+    player.setMediaItem(mediaItem)
+    player.prepare()
+    player.play()
 
     val lifeCycleOwner = rememberUpdatedState(LocalLifecycleOwner.current)
 
