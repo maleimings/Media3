@@ -103,7 +103,7 @@ fun VideoItemView(item: VideoItem, onClick: (url: String) -> Unit) {
 @Composable
 fun VideoView(videoUrl: String) {
     val context = LocalContext.current
-    
+
     val player = remember(context) {
         ExoPlayer.Builder(context).build()
     }

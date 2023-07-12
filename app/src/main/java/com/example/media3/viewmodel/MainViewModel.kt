@@ -11,6 +11,7 @@ class MainViewModel : ViewModel() {
         /**
          * Test urls are from https://ottverse.com/free-mpeg-dash-mpd-manifest-example-test-urls/
          */
+        videoList.add(VideoItem("Tears", "https://storage.googleapis.com/wvmedia/clear/h264/tears/tears.mpd"))
         videoList.add(VideoItem("Low Latency Chunked Single-Bitrate, AVC, and AAC", "https://livesim.dashif.org/livesim/chunkdur_1/ato_7/testpic4_8s/Manifest.mpd"))
         videoList.add(VideoItem("10-bit UHD SDR Live", "https://dash.akamaized.net/dash264/TestCasesUHD/2b/11/MultiRate.mpd"))
         videoList.add(VideoItem("Switching across adaptation set – With switching element", "https://dash.akamaized.net/dash264/TestCasesIOP33/adapatationSetSwitching/5/manifest.mpd"))
