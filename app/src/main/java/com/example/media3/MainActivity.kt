@@ -38,6 +38,8 @@ import com.example.media3.viewmodel.MainViewModel
 import org.koin.android.ext.android.inject
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
+import androidx.media3.common.C
+import androidx.media3.common.MediaMetadata
 
 class MainActivity : ComponentActivity() {
     private val mainViewModel: MainViewModel by inject<MainViewModel>()
@@ -55,27 +57,27 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun VideoScreen(mainViewModel: MainViewModel) {
-    var videoUrl by remember {
-        mutableStateOf(mainViewModel.videoList.first().url)
+    var videoItem by remember {
+        mutableStateOf(mainViewModel.videoList.first())
     }
     Column {
 
-        VideoView(videoUrl = videoUrl)
+        VideoView(videoItem = videoItem)
 
         VideoList(videoList = mainViewModel.videoList) {
-            videoUrl = it
+            videoItem = it
         }
     }
 }
 
 @Composable
-fun VideoList(videoList: List<VideoItem>, onItemClick: (url: String) -> Unit) {
+fun VideoList(videoList: List<VideoItem>, onItemClick: (videoItem: VideoItem) -> Unit) {
     val context = LocalContext.current
     LazyColumn(contentPadding = PaddingValues(horizontal = 8.dp)) {
         items(videoList) {
             val item = it
             VideoItemView(item) {
-                onItemClick(item.url)
+                onItemClick(item)
             }
         }
     }
@@ -101,7 +103,7 @@ fun VideoItemView(item: VideoItem, onClick: (url: String) -> Unit) {
 }
 
 @Composable
-fun VideoView(videoUrl: String) {
+fun VideoView(videoItem: VideoItem) {
     val context = LocalContext.current
 
     val player = remember(context) {
@@ -111,7 +113,16 @@ fun VideoView(videoUrl: String) {
     player.stop()
 
 
-    val mediaItem = MediaItem.fromUri(videoUrl)
+    val mediaItemBuilder = MediaItem.Builder()
+        .setUri(videoItem.url)
+        .setMediaMetadata(MediaMetadata.Builder().setTitle(videoItem.title).build())
+        .setMimeType(videoItem.mediaType)
+
+    if (videoItem.drmUrl.isNotEmpty()) {
+        mediaItemBuilder.setDrmConfiguration(MediaItem.DrmConfiguration.Builder(C.WIDEVINE_UUID).setLicenseUri(videoItem.drmUrl).build())
+    }
+
+    val mediaItem = mediaItemBuilder.build()
     player.setMediaItem(mediaItem)
     player.prepare()
     player.play()
