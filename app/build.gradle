@@ -3,6 +3,10 @@ plugins {
     id 'org.jetbrains.kotlin.android'
 }
 
+static def releaseTime() {
+    return new Date().format("yyMMdd_HHmmss", TimeZone.getTimeZone("UTC"))
+}
+
 android {
     namespace 'com.example.media3'
     compileSdk 34
@@ -24,6 +28,12 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    android.applicationVariants.configureEach {
+        variant -> variant.outputs.configureEach {
+            outputFileName = "${defaultConfig.versionName}_${buildType.name}_${releaseTime()}.apk"
         }
     }
 
