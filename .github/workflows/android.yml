@@ -42,7 +42,7 @@ jobs:
     - name: Get Release File Name
       id: get-file-name
       run: |
-        FILE_NAME=$(find ${{github.workspace}}/app/build/outputs/apk/release/ -name "*.apk" | cut -d "/" -f 7 | cut -d "." -f 4)
+        FILE_NAME=$(find ${{github.workspace}}/app/build/outputs/apk/release/ -name "*.apk" | cut -d "/" -f 11 | cut -d "." -f 4)
         echo "FILE_NAME=$FILE_NAME" >> $GITHUB_OUTPUT
         echo "name is $FILE_NAME"
 
@@ -54,5 +54,5 @@ jobs:
         RELEASE_FILE_NAME: ${{ steps.get-file-name.output.FILE_NAME }}
       uses: actions/upload-artifact@v3
       with:
-        name:  ${{ steps.get-file-name.output.FILE_NAME }}
+        name:  ${{ steps.get-file-name.outputs.FILE_NAME }}
         path: ${{github.workspace}}/app/build/outputs/apk/release/*.apk
