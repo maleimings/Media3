@@ -41,8 +41,9 @@ jobs:
 
     - name: Get Release File Name
       id: get-file-name
-      run:
-        echo "FILE_NAME=$(find ${{github.workspace}}/app/build/outputs/apk/release/ -name "*.apk" | cut -d "/" -f 7 | cut -d "." -f 4)" >> "$GITHUB_OUTPUT"
+      run: |
+        FILE_NAME=$(find ${{github.workspace}}/app/build/outputs/apk/release/ -name "*.apk" | cut -d "/" -f 7 | cut -d "." -f 4)
+        echo "FILE_NAME=$FILE_NAME" >> "$GITHUB_OUTPUT"
 
     - name: Upload apk to artifact
       env:
