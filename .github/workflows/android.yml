@@ -40,11 +40,14 @@ jobs:
       run: ./gradlew assembleRelease --stacktrace
 
     - name: Get Release File Name
-      run: |
-        echo ::set-env name=FILE_NAME::$(find ${{github.workspace}}/app/build/outputs/apk/release/ -name "*.apk" | cut -d "/" -f 7 | cut -d "." -f 4)
+      id: get-file-name
+      run:
+        echo "FILE_NAME=$(find ${{github.workspace}}/app/build/outputs/apk/release/ -name "*.apk" | cut -d "/" -f 7 | cut -d "." -f 4)" >> "$GITHUB_ENV"
 
     - name: Upload apk to artifact
+      env:
+        FILE_NAME: ${{ steps.get-file-name.output.FILE_NAME }}
       uses: actions/upload-artifact@v3
       with:
-        name: ${{ vars.FILE_NAME }}
+        name: $FILE_NAME
         path: ${{github.workspace}}/app/build/outputs/apk/release/*.apk
