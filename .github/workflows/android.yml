@@ -49,5 +49,5 @@ jobs:
         FILE_NAME: ${{ steps.get-file-name.output.FILE_NAME }}
       uses: actions/upload-artifact@v3
       with:
-        name: $FILE_NAME
+        name: ${{ FILE_NAME }}
         path: ${{github.workspace}}/app/build/outputs/apk/release/*.apk
