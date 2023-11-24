@@ -38,3 +38,9 @@ jobs:
         SIGNING_STORE_KEY_ALIAS: ${{ vars.SIGNING_STORE_KEY_ALIAS }}
         SIGNING_STORE_PASSWORD: ${{ vars.SIGNING_STORE_PASSWORD }}
       run: ./gradlew assembleRelease --stacktrace
+
+    - name: Upload apk to artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: Media3-APK
+        path: ${{github.workspace}}/app/build/outputs/apk/release/*.apk
