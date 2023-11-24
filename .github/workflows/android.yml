@@ -47,7 +47,6 @@ jobs:
     - name: Upload apk to artifact
       env:
         RELEASE_FILE_NAME: ${{ steps.get-file-name.output.FILE_NAME }}
-      run: echo "name is $RELEASE_FILE_NAME"
       uses: actions/upload-artifact@v3
       with:
         name: RELEASE_FILE_NAME
