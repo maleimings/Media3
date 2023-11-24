@@ -50,5 +50,5 @@ jobs:
         RELEASE_FILE_NAME: ${{ steps.get-file-name.output.FILE_NAME }}
       uses: actions/upload-artifact@v3
       with:
-        name:  ${{ steps.get-file-name.output.FILE_NAME }}
+        name:  ${{ RELEASE_FILE_NAME }}
         path: ${{github.workspace}}/app/build/outputs/apk/release/*.apk
