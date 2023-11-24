@@ -39,8 +39,17 @@ jobs:
         SIGNING_STORE_PASSWORD: ${{ vars.SIGNING_STORE_PASSWORD }}
       run: ./gradlew assembleRelease --stacktrace
 
+    - name: Get Release File Name
+      id: get-file-name
+      run: |
+        FILE_NAME=$(find ${{github.workspace}}/app/build/outputs/apk/release/ -name "*.apk" | cut -d "/" -f 12 | cut -d "." -f 4)
+        echo "FILE_NAME=$FILE_NAME" >> $GITHUB_OUTPUT
+        echo "File Name is $FILE_NAME"
+
     - name: Upload apk to artifact
+      env:
+        RELEASE_FILE_NAME: ${{ steps.get-file-name.output.FILE_NAME }}
       uses: actions/upload-artifact@v3
       with:
-        name: Media3-APK
+        name:  ${{ steps.get-file-name.outputs.FILE_NAME }}
         path: ${{github.workspace}}/app/build/outputs/apk/release/*.apk
