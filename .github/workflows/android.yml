@@ -43,4 +43,4 @@ jobs:
       uses: actions/upload-artifact@v3
       with:
         name: Media3-APK
-        path: ${{github.workspace}}/app/build/output/apk/release/*.apk
+        path: ${{github.workspace}}/app/build/outputs/apk/release/*.apk
