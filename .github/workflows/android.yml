@@ -47,7 +47,7 @@ jobs:
         echo "name is $FILE_NAME"
 
     - name: Print Name
-      run: echo "name is $(find ${{github.workspace}}/app/build/outputs/apk/release/ -name "*.apk" | cut -d "/" -f 7 | cut -d "." -f 4)"
+      run: echo "name is $(find ${{github.workspace}}/app/build/outputs/apk/release/ -name "*.apk")"
 
     - name: Upload apk to artifact
       env:
